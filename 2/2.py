@@ -8,10 +8,18 @@ while True:
 	prices = list(map(int, input().split()))
 	prices.sort()
 
-	# 要素数が2個未満の時は無理
-	if len(prices) < 2:
-		print("NONE")
-		continue
+	# for i in len(prices):
+	# 	if prices[-1] >= m:
+	# 		prices.pop()
+	# 	else:
+	# 		continue
+
+	# print(prices)
+
+	# # 要素数が2個未満の時は無理
+	# if len(prices) < 2:
+	# 	print("NONE")
+	# 	continue
     
 	max = 0
 	# 要素数が2つ以上の時　前方から組み合わせる
@@ -24,5 +32,5 @@ while True:
 	if max == 0:
 		print("NONE")
 		continue
-	
+
 	print(max)
