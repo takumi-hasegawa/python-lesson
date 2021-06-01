@@ -41,4 +41,4 @@ T = int(input())
 for case_number in range(1, T + 1):
     M = int(input())
     C = list(map(int, input().split()))
-    print(f'Case #{case_number}: {round(solution(M, C), 9)}') 
+    print(f'Case #{case_number}: {round(solution(M, C), 9)}')
