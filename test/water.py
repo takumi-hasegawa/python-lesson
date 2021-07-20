@@ -2,6 +2,17 @@ def node_connected_component(G, s):
     ''' NetworkXのnode_connected_componentと同じ役割を果たす関数．
     ただし，入力のグラフは以下のsolutionで用意された形式に対応する． '''
     # これから作る予定
+    # つながっているnodeの集合を返せればいい、、、
+    C = set([s])
+    # print(C)
+    queue = [s]
+    while len(queue) > 0:
+        v = queue.pop(0)
+        for node in G[v]: # 隣接頂点リストから取り出す
+            if node not in C:
+                C |= set([node])
+                queue.append(node)
+    return C
 
 
 def solution(H, W, altitude):
@@ -32,7 +43,20 @@ def solution(H, W, altitude):
             if sol[h][w] != '':
                 continue
             comp = node_connected_component(G, (h, w)) # ここでは，上記の自作の関数で連結成分（の頂点集合）を得る．
+            # print(comp)
             for hh, ww in comp:
                 sol[hh][ww] = chr(unicode_point)
             unicode_point += 1
     return sol
+
+T = int(input()) # Tをテストケースの数とする．
+for case_number in range(1, T + 1): # テストケース1からTまで繰り返す．
+    H, W = map(int, input().split()) # HとWを行数と列数とする．
+    altitude = [] # altitudeにそれぞれの区画の高さを保存するつもり．
+    for h in range(H):
+        row = list(map(int, input().split()))
+        altitude.append(row)
+    sol = solution(H, W, altitude) # solution_with_nxで得られた，それぞれのテストケースの解をsolとする．
+    print(f'Case #{case_number}:')
+    for h in range(H): # 得られた解を，行ごとに，
+        print(' '.join(sol[h])) # 空白を挟んで1つの文字列にして表示する
