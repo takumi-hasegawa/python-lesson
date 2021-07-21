@@ -1,21 +1,22 @@
-def index_to_room_numbers(connected_index, rooms):
-    C = set()
+def get_min_number(connected_index, rooms):
+    min_number = float('inf')
     for h, w in connected_index:
-        C |= set([rooms[h][w]])
-
-    return C
+        if rooms[h][w] < min_number: min_number = rooms[h][w]
+    return min_number
 
 def node_connected_component(G, s):
     # つながっているnodeの集合を返したい、、、
     C = set([s])
     queue = [s]
+    rooms_count = 0
     while len(queue) > 0:
-        v = queue.pop(0)
+        rooms_count += 1
+        v = queue.pop()
         for node in G[v]: # 隣接頂点リストから取り出す
             if node not in C:
                 C |= set([node])
                 queue.append(node)
-    return C
+    return C, rooms_count
 
 def solve(r, rooms):
     
@@ -51,17 +52,20 @@ def solve(r, rooms):
         for w in range(r):
             if G[(h, w)] == 1: # check済みなら無視 次のループへ
                 continue
-            connected_index = node_connected_component(G, (h, w)) # 移動可能なroomの座標の集合を取得する
-            connected_rooms = index_to_room_numbers(connected_index, rooms)
+            connected_index, rooms_count = node_connected_component(G, (h, w)) # 移動可能なroomの座標の集合と, 連結数を取得
             for hh, ww in connected_index:
-                G[(hh, ww)] = 1 # connectedに含まれればG書き換える
-                # print(G)
+                G[(hh, ww)] = 1 # 探索済みにする
+            if max_len > rooms_count: # 部屋の最大数が小さいなら調べる価値なし 次のループへ
+                continue
 
-            if max_len < len(connected_rooms):
-                max_len = len(connected_rooms)
-                win_room_number = min(connected_rooms)
-            elif min(connected_rooms) < win_room_number and max_len == len(connected_rooms):
-                win_room_number = min(connected_rooms)
+            # 部屋数を同じか更新する場合のみ実行
+            min_number = get_min_number(connected_index, rooms) # 最小番号を取得
+            
+            if max_len < rooms_count:
+                max_len = rooms_count
+                win_room_number = min_number
+            elif max_len == rooms_count and min_number < win_room_number:
+                win_room_number = min_number
                 
     return win_room_number, max_len
 
