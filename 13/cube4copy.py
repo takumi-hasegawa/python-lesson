@@ -71,7 +71,13 @@ def solve(r, rooms):
 
 T = int(input()) # Tをテストケースの数とする．
 for case_number in range(1, T+1): # テストケース1からTまで繰り返す．
-    r = int(input()) # 迷路の大きさはr^2になる
+    while True:
+        r = input() # 迷路の大きさはr^2になる
+        if r:
+            r = int(r)
+            break #空白文字が入っている？のでrが入るまで続ける
+
+
     rooms = [] # roomsに部屋番号を入れるつもり
     for i in range(r):
         row = list(map(int, input().split()))
